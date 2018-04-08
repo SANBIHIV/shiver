@@ -20,7 +20,12 @@ import os
 import sys
 from Bio import SeqIO
 from Bio import Seq
-import itertools
+
+try:
+  from itertools import izip
+except ImportError:
+  izip = zip
+
 from AuxiliaryFunctions import PropagateNoCoverageChar, IUPACdict
 
 # Define a function to check files exist, as a type for the argparse.
@@ -66,7 +71,7 @@ if len(ConsensusAsString) != len(RefAsString):
 # The main bit.
 NewConsensus = ''
 ExpectedBases = ['A', 'C', 'G', 'T', '-']
-for ConsensusBase, RefBase in itertools.izip(ConsensusAsString, RefAsString):
+for ConsensusBase, RefBase in zip(ConsensusAsString, RefAsString):
   if ConsensusBase == '?' or ConsensusBase == 'N':
     NewConsensus += RefBase
   elif ConsensusBase in ExpectedBases:
